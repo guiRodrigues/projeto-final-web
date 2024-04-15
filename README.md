@@ -15,7 +15,7 @@ Um gerenciador de senhas e notas, como o 1Password e LastPass.
 ## Entidades ou tabelas do sistema
 
 - Usuário
-- Entrada/Entry (representa algo que o usuário deseja salvar, pode ser um login/senha, uma chave de API, uma simples nota. Qualquer pedaço de informação que o usuário deseja armazenar.)
+- Entrada/Entry (representa algo que o usuário deseja salvar, pode ser um login/senha, uma chave de API, uma simples nota. Qualquer pedaço de informação que o usuário deseja armazenar. Se quiser, ele também pode compartilhar essa informação e deixar pública, como um Gist do GitHub).
 - Cofre/Vault (representa um local que armazena as Entries, ou seja, um cofre que organiza os dados que o usuário criou. Por exemplo, o usuário pode ter o cofre "Faculdade" e armazenar suas senhas dos sistemas da faculdade, além disso, ele pode ter o cofre "Pessoal", que armazena senhas e logins pessoais)
 
 ## Principais funcionalidades da aplicação
