@@ -1,58 +1,63 @@
-# :checkered_flag: NOME DO PROJETO
+# Gerenciador de Senhas
 
-Breve descrição do que o seu projeto faz.
+Um gerenciador de senhas e notas, como o 1Password e LastPass.
 
-## :technologist: Membros da equipe
+## Membros da equipe
 
-Matrícula, nome e curso dos participantes.
+414941, Guilherme Santos Rodrigues
 
-## :people_holding_hands: Papéis ou tipos de usuário da aplicação
+## Papéis ou tipos de usuário da aplicação
 
-Informe aqui os tipos de usuário que irão interagir com a aplicação. Ex: administrador, locador, locatario, usuário não logado.
+Usuário não registrado, que apenas visualiza
+Usuário registrado, que visualiza e cria entradas (senhas e notas)
 
-> Tenha em mente que obrigatoriamente a aplicação deve possuir funcionalidades acessíveis a todos os tipos de usuário e outra funcionalidades restritas a certos tipos de usuários.
+## Entidades ou tabelas do sistema
 
-## :spiral_calendar: Entidades ou tabelas do sistema
+- Usuário/User
+- Entrada/Entry (representa uma senha, nota, chave)
+- Cofre/Vault (pasta que organiza as entradas)
 
-Liste as principais entidades do sistema.
+## Principais funcionalidades da aplicação
 
-## :triangular_flag_on_post:	 Principais funcionalidades da aplicação
+- Usuário não registrado consegue ver Entries compartilhadas com ele.
+- Usuário registrado consegue criar/visualizar/editar/deletar Entries.
+- Usuário registrado consegue criar/visualizar/editar/deletar Vaults.
+- Usuário registrado consegue associar as Entries com Vaults.
 
-Descreve ou liste brevemente as principais funcionalidades da aplicação que será desenvolvida. Destaque a funcionalidades que serão acessévies a todos os usuários e aquelas restriras a usuários logados.
-
-
-----
-
-:warning::warning::warning: As informações a seguir devem ser enviadas juntamente com a versão final do projeto. :warning::warning::warning:
-
-
-----
-
-## :desktop_computer: Tecnologias e frameworks utilizados
+## Tecnologias e frameworks utilizados
 
 **Frontend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+VueJS v3.0, Vue-Router, e Axios.
 
 **Backend:**
 
-Lista as tecnologias, frameworks e bibliotecas utilizados.
+Node.js e Express.
 
-
-## :shipit: Operações implementadas para cada entidade da aplicação
+## Operações implementadas para cada entidade da aplicação
 
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Entidade 1 | X |  X  |  | X |
-| Entidade 2 | X |    |  X | X |
-| Entidade 3 | X |    |  |  |
+| Usuário |  |    |  |  |
+| Entry | X |  X  |  X | X |
+| Vault | X |  X  | X | X |
 
 > Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
-## :neckbeard: Rotas da API REST utilizadas
+## Rotas da API REST utilizadas
 
-| Método HTTP | URL |
-| --- | --- |
-| GET | api/entidade1/|
-| POST | api/entidade2 |
+Claro, aqui está a lista de rotas da API REST em uma tabela simples:
+
+| Método HTTP | URL               |
+|-------------|-------------------|
+| GET         | /api/entries      |
+| POST        | /api/entries      |
+| GET         | /api/entries/:id  |
+| PUT         | /api/entries/:id  |
+| DELETE      | /api/entries/:id  |
+| GET         | /api/vaults       |
+| POST        | /api/vaults       |
+| GET         | /api/vaults/:id   |
+| PUT         | /api/vaults/:id   |
+| DELETE      | /api/vaults/:id   |
