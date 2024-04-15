@@ -9,14 +9,14 @@ Um gerenciador de senhas e notas, como o 1Password e LastPass.
 ## Papéis ou tipos de usuário da aplicação
 
 Usuário não registrado, que apenas visualiza
-
 Usuário registrado, que visualiza e cria entradas (senhas e notas)
+Administrador, que consegue editar e deletar entradas de qualquer usuário.
 
 ## Entidades ou tabelas do sistema
 
-- Usuário/User
-- Entrada/Entry (representa uma senha, nota, chave)
-- Cofre/Vault (pasta que organiza as entradas)
+- Usuário
+- Entrada/Entry (representa algo que o usuário deseja salvar, pode ser um login/senha, uma chave de API, uma simples nota. Qualquer pedaço de informação que o usuário deseja armazenar.)
+- Cofre/Vault (representa um local que armazena as Entries, ou seja, um cofre que organiza os dados que o usuário criou. Por exemplo, o usuário pode ter o cofre "Faculdade" e armazenar suas senhas dos sistemas da faculdade, além disso, ele pode ter o cofre "Pessoal", que armazena senhas e logins pessoais)
 
 ## Principais funcionalidades da aplicação
 
