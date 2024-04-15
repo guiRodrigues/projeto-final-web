@@ -9,6 +9,7 @@ Um gerenciador de senhas e notas, como o 1Password e LastPass.
 ## Papéis ou tipos de usuário da aplicação
 
 Usuário não registrado, que apenas visualiza
+
 Usuário registrado, que visualiza e cria entradas (senhas e notas)
 
 ## Entidades ou tabelas do sistema
