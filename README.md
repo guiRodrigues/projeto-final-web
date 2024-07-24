@@ -48,8 +48,6 @@ Node.js e Express.
 
 ## Rotas da API REST utilizadas
 
-Claro, aqui está a lista de rotas da API REST em uma tabela simples:
-
 | Método HTTP | URL               |
 |-------------|-------------------|
 | GET         | /api/entries      |
