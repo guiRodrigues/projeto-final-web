@@ -1,9 +1,9 @@
 <script setup lang="ts">
     import { ref, onMounted } from 'vue';
-    import { api } from '../api';
+    import { api } from '@/api';
     import PasswordItem from '../components/PasswordItem.vue';
 
-    import { Password } from '../types';
+    import { Password } from '@/types';
 
     const passwords = ref([] as Password[]);
     // const loading = ref(true)
@@ -33,6 +33,7 @@
         :id="password.id"
         :name="password.name"
         :value="password.value"
+        :is-public="password.isPublic"
         :vault="password.vault"
     />
 </div>

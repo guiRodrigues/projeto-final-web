@@ -1,10 +1,10 @@
 <script setup lang="ts">
     import { ref, onMounted } from 'vue'
-    import { api } from '../api';
+    import { api } from '@/api';
     import { useRoute } from 'vue-router';
     import { useUserStore } from '../store/userStore';
 
-    import type { ApplicationError, User } from '../types';
+    import type { ApplicationError, User } from '@/types';
 
     const route = useRoute();
 

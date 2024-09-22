@@ -20,12 +20,14 @@ export type Password = {
   id: number,
   name: string,
   value: string,
+    isPublic: boolean,
   vault: Vault
 }
 
 export type Vault = {
   id: number,
   name: string,
+    isPublic: boolean,
   description: string,
   // passwords: Password[]
 }

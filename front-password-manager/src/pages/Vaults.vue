@@ -1,9 +1,9 @@
 <script setup lang="ts">
     import { ref, onMounted } from 'vue';
-    import { api } from '../api';
+    import { api } from '@/api';
     import VaultItem from '../components/VaultItem.vue';
 
-    import { Vault } from '../types';
+    import { Vault } from '@/types';
 
     const vaults = ref([] as Vault[]);
     // const loading = ref(true)
@@ -12,8 +12,6 @@
         try {
             const { data } = await api.get('/vaults?populate=*');
             vaults.value = data.data;
-
-            console.log(vaults);
         } catch (e) {
             // if (isAxiosError(e) && isApplicationError(e.response?.data)) {
             // exception.value = e.response?.data
