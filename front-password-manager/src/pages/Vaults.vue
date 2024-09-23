@@ -38,6 +38,7 @@ onMounted(loadVaults);
       :name="vault.name"
       :is-public="vault.isPublic"
       :description="vault.description"
+      :passwords="vault.passwords"
       :user="vault.user"
       :document-id="vault.documentId"
       @vaultDeleted="loadVaults"

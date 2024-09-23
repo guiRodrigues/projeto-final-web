@@ -32,5 +32,6 @@ export type Vault = {
   isPublic: boolean,
   description: string,
   user: User,
-  documentId: string
+  documentId: string,
+  passwords: Password[]
 }
