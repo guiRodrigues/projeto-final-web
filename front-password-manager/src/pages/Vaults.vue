@@ -39,6 +39,8 @@ onMounted(loadVaults);
       :is-public="vault.isPublic"
       :description="vault.description"
       :user="vault.user"
+      :document-id="vault.documentId"
+      @vaultDeleted="loadVaults"
     />
   </div>
 </template>

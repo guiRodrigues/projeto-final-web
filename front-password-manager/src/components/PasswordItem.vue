@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import { defineProps, defineEmits } from 'vue';
 import type { Password } from '../types';
-
-import { Button } from '@/components/ui/button'
+import { useUserStore } from '../store/userStore';
+import { api } from '@/api';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -10,20 +12,38 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { LockKeyhole, LockKeyholeOpen } from "lucide-vue-next";
+import { LockKeyhole, LockKeyholeOpen } from 'lucide-vue-next';
 
-defineProps<Password>()
+const userStore = useUserStore();
+const emit = defineEmits(['passwordDeleted']);
+
+async function removePassword(id: string) {
+  try {
+    await api.delete(`/passwords/${id}`, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`,
+      },
+    });
+    emit('passwordDeleted');
+  } catch (e) {
+    console.error('Error deleting password:', e);
+  }
+}
+
+defineProps<Password>();
 </script>
 
 <template>
-  <Card class='password-card'>
+  <Card class="password-card">
     <CardHeader>
       <CardTitle class="text-lg flex items-center">
         <LockKeyholeOpen v-if="isPublic" class="m-2" />
         <LockKeyhole v-else class="m-2" />
         <span class="font-semibold">{{ name }}</span>
       </CardTitle>
-      <CardDescription>From the vault <span class="font-bold italic">{{ vault.name }}</span> </CardDescription>
+      <CardDescription>
+        From the vault <span class="font-bold italic">{{ vault.name }}</span>
+      </CardDescription>
     </CardHeader>
     <CardContent class="grid gap-4">
       <div>
@@ -35,21 +55,21 @@ defineProps<Password>()
       </div>
     </CardContent>
     <CardFooter>
-      <Button class="w-full">
+      <Button class="w-full" @click="removePassword(documentId)">
         Delete password
       </Button>
     </CardFooter>
   </Card>
 </template>
 
-<style>
+<style scoped>
 .password-card {
-    background-color: #EBF8E5;
+  background-color: #ebf8e5;
 }
 
 .password {
-    font-family: "Space Mono", monospace;
-    font-weight: 400;
-    font-style: normal;
+  font-family: 'Space Mono', monospace;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>

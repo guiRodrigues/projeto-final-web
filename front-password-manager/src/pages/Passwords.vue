@@ -37,6 +37,8 @@ onMounted(loadPasswords);
       :value="password.value"
       :is-public="password.isPublic"
       :vault="password.vault"
+      :document-id="password.documentId"
+      @passwordDeleted="loadPasswords"
     />
   </div>
 </template>

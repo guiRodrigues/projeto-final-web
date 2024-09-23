@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import type { Vault } from '../types';
+import { useUserStore } from '../store/userStore';
+import { defineProps, defineEmits } from 'vue';
+import { api } from '@/api';
 
 import { Button } from '@/components/ui/button'
 import {
@@ -10,6 +13,22 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import {LockKeyhole, LockKeyholeOpen} from "lucide-vue-next";
+
+const userStore = useUserStore();
+const emit = defineEmits(['vaultDeleted']);
+
+async function removeVault(id: string) {
+  try {
+    await api.delete(`/vaults/${id}`, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`,
+      },
+    });
+    emit('vaultDeleted');
+  } catch (e) {
+    console.error('Error deleting vault:', e);
+  }
+}
 
 defineProps<Vault>()
 </script>
@@ -25,7 +44,7 @@ defineProps<Vault>()
       <CardDescription>Created by {{ user?.username || "USER" }}</CardDescription>
     </CardHeader>
     <CardFooter>
-      <Button class="w-full">
+      <Button class="w-full" @click="removeVault(documentId)">
         Delete vault
       </Button>
     </CardFooter>

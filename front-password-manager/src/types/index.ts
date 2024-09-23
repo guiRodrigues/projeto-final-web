@@ -22,7 +22,8 @@ export type Password = {
   name: string,
   value: string,
   isPublic: boolean,
-  vault: Vault
+  vault: Vault,
+  documentId: string
 }
 
 export type Vault = {
@@ -30,5 +31,6 @@ export type Vault = {
   name: string,
   isPublic: boolean,
   description: string,
-  user: User
+  user: User,
+  documentId: string
 }
