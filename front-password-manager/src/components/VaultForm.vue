@@ -7,16 +7,15 @@ import { isApplicationError } from '@/composables/useApplicationError';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
-
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Vault} from "lucide-vue-next";
+} from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Vault } from "lucide-vue-next";
 
 const vaultName = ref('');
 const vaultDescription = ref('');
@@ -72,9 +71,9 @@ async function createVault() {
 }
 
 function resetForm() {
-  vaultName.value = ''
-  vaultDescription.value = ''
-  isPublic.value = 'false'
+  vaultName.value = '';
+  vaultDescription.value = '';
+  isPublic.value = 'false';
 }
 </script>
 
@@ -116,10 +115,10 @@ function resetForm() {
         </div>
       </div>
       <div
-          v-if="feedback"
-          class="col-12 alert alert-dismissible fade show"
-          :class="{ 'alert-danger': error, 'alert-success': !error }"
-          role="alert"
+        v-if="feedback"
+        class="col-12 alert alert-dismissible fade show"
+        :class="{ 'alert-danger': error, 'alert-success': !error }"
+        role="alert"
       >
         {{ feedback }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>

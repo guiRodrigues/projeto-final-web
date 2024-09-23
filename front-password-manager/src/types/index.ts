@@ -1,13 +1,13 @@
 export type User = {
-    id: number,
-    username: string,
-    role: Role,
-    email: string,
-    documentId: string
+  id: number,
+  username: string,
+  role: Role,
+  email: string,
+  documentId: string
 }
 
 type Role = {
-    name: string
+  name: string
 }
 
 export interface ApplicationError {
@@ -21,15 +21,14 @@ export type Password = {
   id: number,
   name: string,
   value: string,
-    isPublic: boolean,
+  isPublic: boolean,
   vault: Vault
 }
 
 export type Vault = {
   id: number,
   name: string,
-    isPublic: boolean,
+  isPublic: boolean,
   description: string,
   user: User
-  // passwords: Password[]
 }

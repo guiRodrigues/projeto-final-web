@@ -1,56 +1,56 @@
-<script setup lang='ts'>
-import { onMounted, ref, defineEmits } from 'vue'
-import { api } from '@/api'
-import { useUserStore } from '../store/userStore'
-import { isAxiosError } from 'axios'
-import { isApplicationError } from '@/composables/useApplicationError'
+<script setup lang="ts">
+import { onMounted, ref, defineEmits } from 'vue';
+import { api } from '@/api';
+import { useUserStore } from '../store/userStore';
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '@/composables/useApplicationError';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card'
+} from '@/components/ui/card';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Button } from '@/components/ui/button'
-import { KeyRound } from 'lucide-vue-next'
+} from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
+import { KeyRound } from 'lucide-vue-next';
 
-const vaults = ref([])
-const passName = ref('')
-const passValue = ref('')
-const isPublic = ref('false')
-const selectedVault = ref('')
-const loading = ref(false)
-const feedback = ref('')
-const error = ref<ApplicationError | null>(null)
-const emit = defineEmits(['passwordCreated'])
+const vaults = ref([]);
+const passName = ref('');
+const passValue = ref('');
+const isPublic = ref('false');
+const selectedVault = ref('');
+const loading = ref(false);
+const feedback = ref('');
+const error = ref<ApplicationError | null>(null);
+const emit = defineEmits(['passwordCreated']);
 
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 function resetForm() {
-  passName.value = ''
-  passValue.value = ''
-  isPublic.value = 'false'
-  selectedVault.value = ''
+  passName.value = '';
+  passValue.value = '';
+  isPublic.value = 'false';
+  selectedVault.value = '';
 }
 
 async function createPassword() {
   if (!passName.value || !passValue.value || !selectedVault.value) {
-    feedback.value = 'All fields are required.'
-    return
+    feedback.value = 'All fields are required.';
+    return;
   }
 
-  loading.value = true
-  feedback.value = ''
-  error.value = null
+  loading.value = true;
+  feedback.value = '';
+  error.value = null;
 
   const vault = vaults.value.find(vault => vault.id === selectedVault.value) || null;
 
@@ -63,7 +63,7 @@ async function createPassword() {
         connect: [vault.documentId]
       }
     },
-  }
+  };
 
   try {
     const { data } = await api.post('/passwords', payload, {
@@ -77,13 +77,13 @@ async function createPassword() {
     resetForm();
   } catch (e) {
     if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-      error.value = e.response?.data
-      feedback.value = error.value.error.message
+      error.value = e.response?.data;
+      feedback.value = error.value.error.message;
     } else {
-      feedback.value = 'An unexpected error occurred.'
+      feedback.value = 'An unexpected error occurred.';
     }
   } finally {
-    loading.value = false
+    loading.value = false;
   }
 }
 
@@ -93,16 +93,16 @@ async function fetchVaults() {
       headers: {
         Authorization: `Bearer ${userStore.jwt}`,
       },
-    })
-    vaults.value = data.data
+    });
+    vaults.value = data.data;
   } catch (e) {
-    console.error('Failed to fetch vaults', e)
+    console.error('Failed to fetch vaults', e);
   }
 }
 
 onMounted(() => {
-  fetchVaults()
-})
+  fetchVaults();
+});
 </script>
 
 <template>
@@ -156,10 +156,10 @@ onMounted(() => {
         </div>
       </div>
       <div
-          v-if="feedback"
-          class="col-12 alert alert-dismissible fade show"
-          :class="{ 'alert-danger': error, 'alert-success': !error }"
-          role="alert"
+        v-if="feedback"
+        class="col-12 alert alert-dismissible fade show"
+        :class="{ 'alert-danger': error, 'alert-success': !error }"
+        role="alert"
       >
         {{ feedback }}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -167,4 +167,3 @@ onMounted(() => {
     </CardContent>
   </Card>
 </template>
-

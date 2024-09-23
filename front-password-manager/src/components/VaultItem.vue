@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import type { Password, Vault } from '../types';
+import type { Vault } from '../types';
 
 import { Button } from '@/components/ui/button'
 import {
   Card,
-  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,

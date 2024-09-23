@@ -1,50 +1,44 @@
 <script setup lang="ts">
-import {ref, onMounted, computed} from 'vue';
-    import { api } from '@/api';
-    import VaultItem from '../components/VaultItem.vue';
+import { ref, onMounted, computed } from 'vue';
+import { api } from '@/api';
+import VaultItem from '../components/VaultItem.vue';
+import VaultForm from "@/components/VaultForm.vue";
+import { useUserStore } from "@/store/userStore.ts";
+import { Vault } from '@/types';
 
-    import { Vault } from '@/types';
-    import PasswordItem from "@/components/PasswordItem.vue";
-    import VaultForm from "@/components/VaultForm.vue";
-    import {useUserStore} from "@/store/userStore.ts";
+const userStore = useUserStore();
+const isAuthenticated = computed(() => userStore.isAuthenticated);
 
-    const userStore = useUserStore();
-    const isAuthenticated = computed(() => userStore.isAuthenticated);
+const vaults = ref<Vault[]>([]);
 
-    const vaults = ref([] as Vault[]);
-    // const loading = ref(true)
-    async function loadVaults() {
-      try {
-        const url = !isAuthenticated.value ? '/vaults?filters[isPublic][$eq]=true&populate=*' : '/vaults?populate=*';
-        const { data } = await api.get(url);
-        vaults.value = data.data;
-      } catch (e) {
-        // if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-        // exception.value = e.response?.data
-        // }
-      } finally {
-        // loading.value = false
-      }
-    }
+async function loadVaults() {
+  try {
+    const url = isAuthenticated.value 
+      ? '/vaults?populate=*' 
+      : '/vaults?filters[isPublic][$eq]=true&populate=*';
+    const { data } = await api.get(url);
+    vaults.value = data.data;
+  } catch (error) {
+    console.error('Error loading vaults:', error);
+  }
+}
 
-    onMounted(loadVaults);
-
-    console.log(vaults)
+onMounted(loadVaults);
 
 </script>
 
 <template>
-<VaultForm v-if="isAuthenticated" @vaultCreated="loadVaults" />
+  <VaultForm v-if="isAuthenticated" @vaultCreated="loadVaults" />
 
-<div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
+  <div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
     <VaultItem
-        v-for="vault in vaults"
-        :id="vault.id"
-        :name="vault.name"
-        :is-public="vault.isPublic"
-        :description="vault.description"
-        :user="vault.user"
+      v-for="vault in vaults"
+      :key="vault.id"
+      :id="vault.id"
+      :name="vault.name"
+      :is-public="vault.isPublic"
+      :description="vault.description"
+      :user="vault.user"
     />
-</div>
-
+  </div>
 </template>

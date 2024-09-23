@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { ref, computed } from "vue";
 import { useRouter, RouterLink } from 'vue-router';
 import { useColorMode } from "@vueuse/core";
@@ -52,7 +52,7 @@ function logout() {
 
 <template>
   <header
-      :class="{
+    :class="{
       'shadow-light': mode === 'light',
       'shadow-dark': mode === 'dark',
       'w-[90%] md:w-[70%] lg:w-[75%] lg:max-w-screen-xl top-5 mx-auto sticky border z-40 rounded-2xl flex justify-between items-center p-2 bg-card shadow-md mt-4': true,
@@ -67,15 +67,15 @@ function logout() {
           <NavigationMenuContent>
             <div class="grid w-[600px] grid-cols-2 gap-5 p-4">
               <img
-                  src="https://cdn.dribbble.com/userupload/3915661/file/original-b3cfb5652ebdfb32647f6c6b7de254d1.png?resize=2048x1536"
-                  alt="Beach"
-                  class="h-full w-full rounded-md object-cover"
+                src="https://cdn.dribbble.com/userupload/3915661/file/original-b3cfb5652ebdfb32647f6c6b7de254d1.png?resize=2048x1536"
+                alt="Beach"
+                class="h-full w-full rounded-md object-cover"
               />
               <ul class="flex flex-col gap-2">
                 <li
-                    v-for="{ title, description } in featureList"
-                    :key="title"
-                    class="rounded-md p-3 text-sm hover:bg-muted"
+                  v-for="{ title, description } in featureList"
+                  :key="title"
+                  class="rounded-md p-3 text-sm hover:bg-muted"
                 >
                   <p class="mb-1 font-semibold leading-none text-foreground">{{ title }}</p>
                   <p class="line-clamp-2 text-muted-foreground">{{ description }}</p>
@@ -88,11 +88,11 @@ function logout() {
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <Button
-                v-for="{ href, label } in routeList"
-                :key="label"
-                as-child
-                variant="ghost"
-                class="justify-start text-base"
+              v-for="{ href, label } in routeList"
+              :key="label"
+              as-child
+              variant="ghost"
+              class="justify-start text-base"
             >
               <RouterLink :to="href">{{ label }}</RouterLink>
             </Button>
@@ -102,22 +102,6 @@ function logout() {
     </NavigationMenu>
 
     <div class="hidden lg:flex">
-      <!-- <ChangeTheme /> -->
-
-      <!-- <Button
-        as-child
-        size="sm"
-        variant="ghost"
-        aria-label="View on GitHub"
-      >
-        <a
-          aria-label="View on GitHub"
-          href="https://github.com/guiRodrigues/projeto-final-web"
-          target="_blank"
-        >
-          <GithubIcon class="size-5" />
-        </a>
-      </Button> -->
       <RouterLink v-if="!isAuthenticated" to="/login">
         <Button class="mx-3">Login</Button>
       </RouterLink>
