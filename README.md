@@ -16,6 +16,10 @@ Porém, ele é centralizado e possui duas visões. Os usuários têm a capacidad
 - `npm run dev`
 - Abrir a URL no navegador: http://localhost:5173/
 
+Você pode criar uma conta, mas se preferir, pode usar a conta de teste:
+- email: gui@test.com
+- senha: test123
+
 ## Referências visuais
 
 ![Analytics landing page — Untitled UI](https://cdn.dribbble.com/userupload/15729004/file/original-f173714d81790a38fc7101b23ff069ef.jpg?resize=2048x1536 "Analytics landing page — Untitled UI")
