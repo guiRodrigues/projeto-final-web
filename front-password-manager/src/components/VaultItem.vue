@@ -12,8 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { CircleAlert } from 'lucide-vue-next'
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import {LockKeyhole, LockKeyholeOpen} from "lucide-vue-next";
 
 const userStore = useUserStore();
@@ -45,16 +44,18 @@ defineProps<Vault>()
       </CardTitle>
       <CardDescription>Created by {{ user?.username || "USER" }}</CardDescription>
     </CardHeader>
-    <CardContent class="flex-grow">
-      <!-- Add any content here if needed -->
-    </CardContent>
     <CardFooter class="mt-auto">
       <Button v-if="passwords.length === 0" class="w-full" @click="removeVault(documentId)">
         Delete vault
       </Button>
-      <Alert v-else>
+      <Alert v-else-if="userStore.isAuthenticated">
         <AlertDescription>
           You can only delete empty Vaults...
+        </AlertDescription>
+      </Alert>
+      <Alert v-else>
+        <AlertDescription>
+          You can only modify this item after login
         </AlertDescription>
       </Alert>
     </CardFooter>

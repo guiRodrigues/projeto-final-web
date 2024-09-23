@@ -12,7 +12,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { LockKeyhole, LockKeyholeOpen } from 'lucide-vue-next';
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import {LockKeyhole, LockKeyholeOpen} from "lucide-vue-next";
 
 const userStore = useUserStore();
 const emit = defineEmits(['passwordDeleted']);
@@ -55,9 +56,14 @@ defineProps<Password>();
       </div>
     </CardContent>
     <CardFooter>
-      <Button class="w-full" @click="removePassword(documentId)">
+      <Button v-if="userStore.isAuthenticated" class="w-full" @click="removePassword(documentId)">
         Delete password
       </Button>
+      <Alert v-else>
+        <AlertDescription>
+          You can only modify this item after login
+        </AlertDescription>
+      </Alert>
     </CardFooter>
   </Card>
 </template>
