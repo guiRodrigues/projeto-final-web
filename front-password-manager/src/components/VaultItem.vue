@@ -26,7 +26,7 @@ defineProps<Vault>()
     </CardHeader>
     <CardFooter>
       <Button class="w-full">
-        Update vault
+        Delete vault
       </Button>
     </CardFooter>
   </Card>
