@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, defineEmits } from 'vue'
 import { api } from '@/api'
 import { useUserStore } from '../store/userStore'
 import { isAxiosError } from 'axios'
@@ -31,8 +31,16 @@ const selectedVault = ref('')
 const loading = ref(false)
 const feedback = ref('')
 const error = ref<ApplicationError | null>(null)
+const emit = defineEmits(['passwordCreated'])
 
 const userStore = useUserStore()
+
+function resetForm() {
+  passName.value = ''
+  passValue.value = ''
+  isPublic.value = 'false'
+  selectedVault.value = ''
+}
 
 async function createPassword() {
   if (!passName.value || !passValue.value || !selectedVault.value) {
@@ -62,10 +70,11 @@ async function createPassword() {
       headers: {
         Authorization: `Bearer ${userStore.jwt}`,
       },
-    })
+    });
 
-    console.log(data.data)
-    feedback.value = 'Password created successfully.'
+    feedback.value = 'Password created successfully.';
+    emit('passwordCreated');
+    resetForm();
   } catch (e) {
     if (isAxiosError(e) && isApplicationError(e.response?.data)) {
       error.value = e.response?.data

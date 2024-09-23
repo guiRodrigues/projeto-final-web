@@ -36,7 +36,7 @@ defineProps<Password>()
     </CardContent>
     <CardFooter>
       <Button class="w-full">
-        <Check class="mr-2 h-4 w-4" /> Update password
+        Update password
       </Button>
     </CardFooter>
   </Card>

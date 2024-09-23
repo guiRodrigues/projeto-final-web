@@ -14,26 +14,28 @@ import {ref, onMounted, computed} from 'vue';
     const userStore = useUserStore();
     const isAuthenticated = computed(() => userStore.isAuthenticated);
 
-    onMounted(async () => {
-        try {
-            const url = !isAuthenticated.value ? '/passwords?filters[isPublic][$eq]=true&populate=*' : '/passwords?populate=*';
-            const { data } = await api.get(url);
-            passwords.value = data.data;
+    async function loadPasswords() {
+      try {
+        const url = !isAuthenticated.value ? '/passwords?filters[isPublic][$eq]=true&populate=*' : '/passwords?populate=*';
+        const { data } = await api.get(url);
+        passwords.value = data.data;
 
-            console.log('PASSWORDS', passwords)
-        } catch (e) {
-            // if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-            // exception.value = e.response?.data
-            // }
-        } finally {
-            // loading.value = false
-        }
-    });
+        console.log('PASSWORDS', passwords)
+      } catch (e) {
+        // if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+        // exception.value = e.response?.data
+        // }
+      } finally {
+        // loading.value = false
+      }
+    }
+
+    onMounted(loadPasswords);
 </script>
 
 <template>
 <h1>PASSWORDS</h1>
-<PasswordForm v-if="isAuthenticated" />
+<PasswordForm v-if="isAuthenticated" @passwordCreated="loadPasswords" />
 
 <div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
     <PasswordItem
