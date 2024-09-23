@@ -16,6 +16,7 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {Vault} from "lucide-vue-next";
 
 const vaultName = ref('');
 const vaultDescription = ref('');
@@ -69,8 +70,8 @@ async function createVault() {
 <template>
   <Card class="w-4/5 mx-auto mt-10 mb-12">
     <CardHeader>
-      <CardTitle>Create a new Vault</CardTitle>
-      <CardDescription>Organize your passwords in a secure vault.</CardDescription>
+      <CardTitle class="flex items-center"><Vault class="mr-1.5" /> Create a new Vault</CardTitle>
+      <CardDescription class="mt-2 mb-4">Organize your passwords in a secure vault!</CardDescription>
     </CardHeader>
     <CardContent>
       <form @submit.prevent="createVault" class="flex items-start gap-x-4">

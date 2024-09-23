@@ -21,6 +21,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+import { KeyRound } from 'lucide-vue-next'
 
 const vaults = ref([])
 const passName = ref('')
@@ -98,8 +99,8 @@ onMounted(() => {
 <template>
   <Card class="w-4/5 mx-auto mt-10 mb-12">
     <CardHeader>
-      <CardTitle>Create a new Password</CardTitle>
-      <CardDescription>Save it here so you can easily find it later!</CardDescription>
+      <CardTitle class="flex items-center"><KeyRound class="mr-1.5" /> Create a new Password</CardTitle>
+      <CardDescription class="mt-2 mb-4">Save it here so you can easily find it later!</CardDescription>
     </CardHeader>
     <CardContent>
       <form @submit.prevent="createPassword" class="flex items-start gap-x-4">

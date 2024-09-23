@@ -18,7 +18,6 @@ import {
 
 import { Button } from "@/components/ui/button";
 
-import { KeyRound } from 'lucide-vue-next';
 import GithubIcon from "@/icons/Github.vue";
 import ChangeTheme from "./ChangeTheme.vue";
 import { RouterLink } from 'vue-router'
@@ -83,9 +82,8 @@ function logout() {
   >
     <a
       href="/"
-      class="font-bold text-lg flex items-center"
+      class="font-bold text-lg flex items-center ml-3"
     >
-      <KeyRound class="m-2" />
       AwesomePass</a
     >
 
@@ -139,7 +137,7 @@ function logout() {
     </NavigationMenu>
 
     <div class="hidden lg:flex">
-      <!-- <ChangeTheme /> -->
+<!--       <ChangeTheme />-->
 
       <!-- <Button
         as-child
@@ -156,11 +154,11 @@ function logout() {
         </a>
       </Button> -->
       <RouterLink v-if="!isAuthenticated" to="/login">
-        Login
+        <Button>Login</Button>
       </RouterLink>
       <div v-else>
-        <span>{{ username }}</span>
-        <Button @click="logout">Logout</Button>
+        <span>Olá, {{ username }}!</span>
+        <Button class="mx-3" @click="logout">Logout</Button>
       </div>
     </div>
   </header>

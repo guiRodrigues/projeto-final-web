@@ -4,7 +4,7 @@ import Navbar from './components/Navbar.vue';
 
 <template>
   <Navbar />
-  <div class="album py-5 bg-body-tertiary">
+  <div class="grid album bg-body-tertiary">
     <div class="container">
       <RouterView></RouterView>
     </div>
@@ -12,16 +12,14 @@ import Navbar from './components/Navbar.vue';
 </template>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
+.grid {
+  position: absolute;
+  inset: 0;
+  height: 100%;
+  width: 100%;
+  padding-top: 5%;
+  background-image: linear-gradient(to right, #8080800A 1px, transparent 1px),
+  linear-gradient(to bottom, #8080800A 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 </style>
