@@ -9,25 +9,25 @@
 
     const vaults = ref([] as Vault[]);
     // const loading = ref(true)
-
     onMounted(async () => {
-        try {
-            const { data } = await api.get('/vaults?populate=*');
-            vaults.value = data.data;
-        } catch (e) {
-            // if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-            // exception.value = e.response?.data
-            // }
-        } finally {
-            // loading.value = false
-        }
+      try {
+        const { data } = await api.get('/vaults?populate=*');
+        vaults.value = data.data;
+      } catch (e) {
+        // if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+        // exception.value = e.response?.data
+        // }
+      } finally {
+        // loading.value = false
+      }
     });
+
 </script>
 
 <template>
 <h1>COFRES</h1>
 
-<VaultForm />
+<!--<VaultForm />-->
 
 <div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
     <VaultItem

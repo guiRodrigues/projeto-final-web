@@ -1,4 +1,9 @@
 <script setup lang='ts'>
+import {onMounted, ref} from 'vue'
+import { api } from '@/api'
+import { useUserStore } from '../store/userStore'
+import { isAxiosError } from 'axios'
+import { isApplicationError } from '@/composables/useApplicationError'
 import {
   Card,
   CardContent,
@@ -16,6 +21,68 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
+
+const vaults = ref('')
+const passName = ref('')
+const passValue = ref('')
+const isPublic = ref('false')
+const loading = ref(false)
+const feedback = ref('')
+const error = ref<ApplicationError | null>(null)
+
+const userStore = useUserStore();
+
+async function createPassword() {
+  loading.value = true
+  feedback.value = ''
+  error.value = null
+
+  const payload = {
+    data: {
+      name: passName.value,
+      value: passValue.value,
+      isPublic: isPublic.value === 'true',
+    },
+  }
+
+  try {
+    const { data } = await api.post('/passwords', payload, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`,
+      },
+    })
+
+    console.log(data.data)
+    feedback.value = 'Password created successfully.'
+  } catch (e) {
+    if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+      error.value = e.response?.data
+      feedback.value = error.value.error.message
+    } else {
+      feedback.value = 'An unexpected error occurred.'
+    }
+  } finally {
+    loading.value = false
+  }
+}
+
+async function fetchVaults() {
+  try {
+    const { data } = await api.get('/vaults?populate=*', {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`,
+      },
+    })
+    vaults.value = data.data
+  } catch (e) {
+    console.error('Failed to fetch vaults', e)
+  }
+}
+
+// Fetch vaults on component mount
+onMounted(() => {
+  fetchVaults()
+})
 </script>
 
 <template>
@@ -25,18 +92,18 @@ import { Button } from '@/components/ui/button'
       <CardDescription>Save it here so you can easily find it later!</CardDescription>
     </CardHeader>
     <CardContent>
-      <form class="flex items-start gap-x-4">
+      <form @submit.prevent="createPassword" class="flex items-start gap-x-4">
         <div class="flex-1 flex flex-col space-y-1.5">
           <Label for="name">Name</Label>
-          <Input id="name" placeholder="A nice identifier" />
+          <Input v-model="passName" id="name" placeholder="A nice identifier" />
         </div>
         <div class="flex-1 flex flex-col space-y-1.5">
           <Label for="password">Password value</Label>
-          <Input id="password" placeholder="Your awesome password" />
+          <Input v-model="passValue" id="password" placeholder="Your awesome password" />
         </div>
         <div class="flex-1 flex flex-col space-y-1.5">
           <Label for="is-public">Is public?</Label>
-          <Select>
+          <Select v-model="isPublic">
             <SelectTrigger id="is-public">
               <SelectValue placeholder="Select" />
             </SelectTrigger>
@@ -46,10 +113,37 @@ import { Button } from '@/components/ui/button'
             </SelectContent>
           </Select>
         </div>
+        <div class="flex-1 flex flex-col space-y-1.5">
+          <Label for="vault">Vault</Label>
+          <Select v-model="selectedVault">
+            <SelectTrigger id="vault">
+              <SelectValue placeholder="Select a vault" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              <SelectItem v-for="vault in vaults" :key="vault.id" :value="vault.id">
+                {{ vault.name }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
         <div class="self-end">
           <Button type="submit">Create</Button>
         </div>
       </form>
+      <div v-if="loading" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+      <div
+          v-if="feedback"
+          class="col-12 alert alert-dismissible fade show"
+          :class="{ 'alert-danger': error, 'alert-success': !error }"
+          role="alert"
+      >
+        {{ feedback }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     </CardContent>
   </Card>
 </template>
