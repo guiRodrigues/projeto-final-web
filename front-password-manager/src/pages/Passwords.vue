@@ -14,11 +14,9 @@ import {ref, onMounted, computed} from 'vue';
     const userStore = useUserStore();
     const isAuthenticated = computed(() => userStore.isAuthenticated);
 
-    console.log('HEEEY', isAuthenticated)
-
     onMounted(async () => {
         try {
-            const url = !isAuthenticated ? '/passwords?filters[isPublic][$eq]=true&populate=*' : '/passwords?populate=*';
+            const url = !isAuthenticated.value ? '/passwords?filters[isPublic][$eq]=true&populate=*' : '/passwords?populate=*';
             const { data } = await api.get(url);
             passwords.value = data.data;
 

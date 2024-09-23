@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import {onMounted, ref} from 'vue'
+import { onMounted, ref } from 'vue'
 import { api } from '@/api'
 import { useUserStore } from '../store/userStore'
 import { isAxiosError } from 'axios'
@@ -22,26 +22,37 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Button } from '@/components/ui/button'
 
-const vaults = ref('')
+const vaults = ref([])
 const passName = ref('')
 const passValue = ref('')
 const isPublic = ref('false')
+const selectedVault = ref('')
 const loading = ref(false)
 const feedback = ref('')
 const error = ref<ApplicationError | null>(null)
 
-const userStore = useUserStore();
+const userStore = useUserStore()
 
 async function createPassword() {
+  if (!passName.value || !passValue.value || !selectedVault.value) {
+    feedback.value = 'All fields are required.'
+    return
+  }
+
   loading.value = true
   feedback.value = ''
   error.value = null
+
+  const vault = vaults.value.find(vault => vault.id === selectedVault.value) || null;
 
   const payload = {
     data: {
       name: passName.value,
       value: passValue.value,
       isPublic: isPublic.value === 'true',
+      vault: {
+        connect: [vault.documentId]
+      }
     },
   }
 
@@ -68,7 +79,7 @@ async function createPassword() {
 
 async function fetchVaults() {
   try {
-    const { data } = await api.get('/vaults?populate=*', {
+    const { data } = await api.get('/vaults', {
       headers: {
         Authorization: `Bearer ${userStore.jwt}`,
       },
@@ -79,7 +90,6 @@ async function fetchVaults() {
   }
 }
 
-// Fetch vaults on component mount
 onMounted(() => {
   fetchVaults()
 })
@@ -95,11 +105,11 @@ onMounted(() => {
       <form @submit.prevent="createPassword" class="flex items-start gap-x-4">
         <div class="flex-1 flex flex-col space-y-1.5">
           <Label for="name">Name</Label>
-          <Input v-model="passName" id="name" placeholder="A nice identifier" />
+          <Input v-model="passName" id="name" placeholder="A nice identifier" required />
         </div>
         <div class="flex-1 flex flex-col space-y-1.5">
           <Label for="password">Password value</Label>
-          <Input v-model="passValue" id="password" placeholder="Your awesome password" />
+          <Input v-model="passValue" id="password" placeholder="Your awesome password" required />
         </div>
         <div class="flex-1 flex flex-col space-y-1.5">
           <Label for="is-public">Is public?</Label>
@@ -115,7 +125,7 @@ onMounted(() => {
         </div>
         <div class="flex-1 flex flex-col space-y-1.5">
           <Label for="vault">Vault</Label>
-          <Select v-model="selectedVault">
+          <Select v-model="selectedVault" required>
             <SelectTrigger id="vault">
               <SelectValue placeholder="Select a vault" />
             </SelectTrigger>
@@ -147,3 +157,4 @@ onMounted(() => {
     </CardContent>
   </Card>
 </template>
+
