@@ -1,50 +1,42 @@
 <script setup lang="ts">
-import {ref, onMounted, computed} from 'vue';
-    import { api } from '@/api';
-    import PasswordItem from '../components/PasswordItem.vue';
-    import PasswordForm from "../components/PasswordForm.vue";
-    import { useUserStore } from '../store/userStore';
+import { ref, onMounted, computed } from 'vue';
+import { api } from '@/api';
+import PasswordItem from '../components/PasswordItem.vue';
+import PasswordForm from "../components/PasswordForm.vue";
+import { useUserStore } from '../store/userStore';
+import { Password } from '@/types';
 
-    import { Password } from '@/types';
+const passwords = ref<Password[]>([]);
+const userStore = useUserStore();
+const isAuthenticated = computed(() => userStore.isAuthenticated);
 
+async function loadPasswords() {
+  try {
+    const url = isAuthenticated.value 
+      ? '/passwords?populate=*' 
+      : '/passwords?filters[isPublic][$eq]=true&populate=*';
+    const { data } = await api.get(url);
+    passwords.value = data.data;
+  } catch (error) {
+    console.error('Error loading passwords:', error);
+  }
+}
 
-    const passwords = ref([] as Password[]);
-    // const loading = ref(true)
-
-    const userStore = useUserStore();
-    const isAuthenticated = computed(() => userStore.isAuthenticated);
-
-    async function loadPasswords() {
-      try {
-        const url = !isAuthenticated.value ? '/passwords?filters[isPublic][$eq]=true&populate=*' : '/passwords?populate=*';
-        const { data } = await api.get(url);
-        passwords.value = data.data;
-
-        console.log('PASSWORDS', passwords)
-      } catch (e) {
-        // if (isAxiosError(e) && isApplicationError(e.response?.data)) {
-        // exception.value = e.response?.data
-        // }
-      } finally {
-        // loading.value = false
-      }
-    }
-
-    onMounted(loadPasswords);
+onMounted(loadPasswords);
 </script>
 
 <template>
-<PasswordForm v-if="isAuthenticated" @passwordCreated="loadPasswords" />
+  <PasswordForm v-if="isAuthenticated" @passwordCreated="loadPasswords" />
 
-<div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
+  <div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
     <PasswordItem
-        v-for="password in passwords"
-        :id="password.id"
-        :name="password.name"
-        :value="password.value"
-        :is-public="password.isPublic"
-        :vault="password.vault"
+      v-for="password in passwords"
+      :key="password.id"
+      :id="password.id"
+      :name="password.name"
+      :value="password.value"
+      :is-public="password.isPublic"
+      :vault="password.vault"
     />
-</div>
-
+  </div>
 </template>

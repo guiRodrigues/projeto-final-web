@@ -12,7 +12,6 @@
   font-family: "EB Garamond", serif;
   font-optical-sizing: auto;
   font-weight: 800;
-  font-style: italic;
   font-size: 6em;
   margin-top: 7%;
 }
