@@ -28,10 +28,12 @@ Você pode criar uma conta, mas se preferir, pode usar a conta de teste:
 ## Resultados
 ### Homepage
 ![img-1](./showcase-images/img-1.png)
-### Página de senhas com o usuário logado
-![img-2](./showcase-images/img-3.png)
-### Página de cofres com usuário deslogado
-![img-3](./showcase-images/img-2.png)
+### Página de Vaults/Cofres
+![img-2](./showcase-images/img-2.png)
+### Página de Senhas
+![img-3](./showcase-images/img-3.png)
+### Página do usuário
+![img-4](./showcase-images/img-4.png)
 
 ## Papéis ou tipos de usuário da aplicação
 
