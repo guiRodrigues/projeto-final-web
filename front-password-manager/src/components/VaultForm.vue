@@ -1,55 +1,117 @@
 <script setup lang="ts">
-import type { Password } from '../types';
+import { ref } from 'vue';
+import { api } from '@/api';
+import { useUserStore } from '../store/userStore';
+import { isAxiosError } from 'axios';
+import { isApplicationError } from '@/composables/useApplicationError';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { LockKeyhole, LockKeyholeOpen } from "lucide-vue-next";
+} from '@/components/ui/card'
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
-defineProps<Password>()
+const vaultName = ref('');
+const vaultDescription = ref('');
+const isPublic = ref('false');
+const feedback = ref('');
+const error = ref<ApplicationError | null>(null);
+const loading = ref(false);
+
+const userStore = useUserStore();
+
+async function createVault() {
+  if (!vaultName.value || !vaultDescription.value) {
+    feedback.value = 'All fields are required.';
+    return;
+  }
+
+  loading.value = true;
+  feedback.value = '';
+  error.value = null;
+
+  const payload = {
+    data: {
+      name: vaultName.value,
+      description: vaultDescription.value,
+      isPublic: isPublic.value === 'true',
+    },
+  };
+
+  try {
+    const { data } = await api.post('/vaults', payload, {
+      headers: {
+        Authorization: `Bearer ${userStore.jwt}`,
+      },
+    });
+
+    console.log(data.data);
+    feedback.value = 'Vault created successfully.';
+  } catch (e) {
+    if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+      error.value = e.response?.data;
+      feedback.value = error.value.error.message;
+    } else {
+      feedback.value = 'An unexpected error occurred.';
+    }
+  } finally {
+    loading.value = false;
+  }
+}
 </script>
 
 <template>
-  <Card class='password-card'>
+  <Card class="w-4/5 mx-auto mt-10 mb-12">
     <CardHeader>
-      <CardTitle class="flex items-center">
-        <LockKeyholeOpen v-if="isPublic" class="m-2" />
-        <LockKeyhole v-else class="m-2" />
-        <span>{{ name }}</span>
-      </CardTitle>
-      <CardDescription>From the vault <span class="font-bold italic">{{ vault.name }}</span> </CardDescription>
+      <CardTitle>Create a new Vault</CardTitle>
+      <CardDescription>Organize your passwords in a secure vault.</CardDescription>
     </CardHeader>
-    <CardContent class="grid gap-4">
-      <div>
-        <div class="mb-4 grid grid-cols-[25px_minmax(0,1fr)] items-start pb-4 last:mb-0 last:pb-0">
-          <div>
-            <p class="password">{{ value }}</p>
-          </div>
+    <CardContent>
+      <form @submit.prevent="createVault" class="flex items-start gap-x-4">
+        <div class="flex-1 flex flex-col space-y-1.5">
+          <Label for="vault-name">Vault Name</Label>
+          <Input v-model="vaultName" id="vault-name" placeholder="Enter vault name" required />
+        </div>
+        <div class="flex-1 flex flex-col space-y-1.5">
+          <Label for="vault-description">Vault Description</Label>
+          <Input v-model="vaultDescription" id="vault-description" placeholder="Enter vault description" required />
+        </div>
+        <div class="flex-1 flex flex-col space-y-1.5">
+          <Label for="is-public">Is public?</Label>
+          <Select v-model="isPublic">
+            <SelectTrigger id="is-public">
+              <SelectValue placeholder="Select" />
+            </SelectTrigger>
+            <SelectContent position="popper">
+              <SelectItem value="false">False</SelectItem>
+              <SelectItem value="true">True</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+        <div class="self-end">
+          <Button type="submit">Create</Button>
+        </div>
+      </form>
+      <div v-if="loading" class="text-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
+      <div
+          v-if="feedback"
+          class="col-12 alert alert-dismissible fade show"
+          :class="{ 'alert-danger': error, 'alert-success': !error }"
+          role="alert"
+      >
+        {{ feedback }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
     </CardContent>
-    <CardFooter>
-      <Button class="w-full">
-        <Check class="mr-2 h-4 w-4" /> Update password
-      </Button>
-    </CardFooter>
   </Card>
 </template>
-
-<style>
-.password-card {
-  background-color: #EBF8E5;
-}
-
-.password {
-  font-family: "Space Mono", monospace;
-  font-weight: 400;
-  font-style: normal;
-}
-</style>

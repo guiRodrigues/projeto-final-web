@@ -27,13 +27,14 @@
 <template>
 <h1>COFRES</h1>
 
-<!--<VaultForm />-->
+<VaultForm />
 
 <div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
     <VaultItem
         v-for="vault in vaults"
         :id="vault.id"
         :name="vault.name"
+        :is-public="vault.isPublic"
         :description="vault.description"
     />
 </div>

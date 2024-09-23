@@ -10,6 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import {LockKeyhole, LockKeyholeOpen} from "lucide-vue-next";
 
 defineProps<Password>()
 </script>
@@ -17,7 +18,11 @@ defineProps<Password>()
 <template>
   <Card class='m-3 vault-card'>
     <CardHeader>
-      <CardTitle>{{ name }}</CardTitle>
+      <CardTitle class="flex items-center">
+        <LockKeyholeOpen v-if="isPublic" class="m-2" />
+        <LockKeyhole v-else class="m-2" />
+        <span>{{ name }}</span>
+      </CardTitle>
       <CardDescription>Created by Guilherme</CardDescription>
     </CardHeader>
     <CardContent class="grid gap-4">
