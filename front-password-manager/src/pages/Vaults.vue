@@ -13,7 +13,7 @@ import {ref, onMounted, computed} from 'vue';
 
     const vaults = ref([] as Vault[]);
     // const loading = ref(true)
-    onMounted(async () => {
+    async function loadVaults() {
       try {
         const url = !isAuthenticated.value ? '/vaults?filters[isPublic][$eq]=true&populate=*' : '/vaults?populate=*';
         const { data } = await api.get(url);
@@ -25,12 +25,16 @@ import {ref, onMounted, computed} from 'vue';
       } finally {
         // loading.value = false
       }
-    });
+    }
+
+    onMounted(loadVaults);
+
+    console.log(vaults)
 
 </script>
 
 <template>
-<VaultForm v-if="isAuthenticated" />
+<VaultForm v-if="isAuthenticated" @vaultCreated="loadVaults" />
 
 <div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
     <VaultItem
@@ -39,6 +43,7 @@ import {ref, onMounted, computed} from 'vue';
         :name="vault.name"
         :is-public="vault.isPublic"
         :description="vault.description"
+        :user="vault.user"
     />
 </div>
 

@@ -716,6 +716,10 @@ export interface ApiVaultVault extends Struct.CollectionTypeSchema {
     description: Schema.Attribute.String;
     passwords: Schema.Attribute.Relation<'oneToMany', 'api::password.password'>;
     isPublic: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Schema.Attribute.DateTime;
     updatedAt: Schema.Attribute.DateTime;
     publishedAt: Schema.Attribute.DateTime;

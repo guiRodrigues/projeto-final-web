@@ -68,7 +68,8 @@
     "vaults": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::vault.vault"
+      "target": "api::vault.vault",
+      "mappedBy": "user"
     }
   }
 }

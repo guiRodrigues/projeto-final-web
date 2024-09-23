@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Password } from '../types';
+import type { Password, Vault } from '../types';
 
 import { Button } from '@/components/ui/button'
 import {
@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/card';
 import {LockKeyhole, LockKeyholeOpen} from "lucide-vue-next";
 
-defineProps<Password>()
+defineProps<Vault>()
 </script>
 
 <template>
@@ -23,17 +23,8 @@ defineProps<Password>()
         <LockKeyhole v-else class="m-2" />
         <span class="font-semibold">{{ name }}</span>
       </CardTitle>
-      <CardDescription>Created by Guilherme</CardDescription>
+      <CardDescription>Created by {{ user?.username || "USER" }}</CardDescription>
     </CardHeader>
-    <CardContent class="grid gap-4">
-      <div>
-        <div class="mb-4 grid grid-cols-[25px_minmax(0,1fr)] items-start pb-4 last:mb-0 last:pb-0">
-          <div>
-            <p>{{ value }}</p>
-          </div>
-        </div>
-      </div>
-    </CardContent>
     <CardFooter>
       <Button class="w-full">
         Update vault

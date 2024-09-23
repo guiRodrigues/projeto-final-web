@@ -2,7 +2,8 @@ export type User = {
     id: number,
     username: string,
     role: Role,
-    email: string
+    email: string,
+    documentId: string
 }
 
 type Role = {
@@ -29,5 +30,6 @@ export type Vault = {
   name: string,
     isPublic: boolean,
   description: string,
+  user: User
   // passwords: Password[]
 }

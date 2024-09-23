@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, defineEmits } from 'vue';
 import { api } from '@/api';
 import { useUserStore } from '../store/userStore';
 import { isAxiosError } from 'axios';
@@ -24,6 +24,7 @@ const isPublic = ref('false');
 const feedback = ref('');
 const error = ref<ApplicationError | null>(null);
 const loading = ref(false);
+const emit = defineEmits(['vaultCreated']);
 
 const userStore = useUserStore();
 
@@ -42,6 +43,9 @@ async function createVault() {
       name: vaultName.value,
       description: vaultDescription.value,
       isPublic: isPublic.value === 'true',
+      user: {
+        connect: [userStore.user.documentId]
+      }
     },
   };
 
@@ -52,7 +56,8 @@ async function createVault() {
       },
     });
 
-    console.log(data.data);
+    emit('vaultCreated');
+    resetForm();
     feedback.value = 'Vault created successfully.';
   } catch (e) {
     if (isAxiosError(e) && isApplicationError(e.response?.data)) {
@@ -64,6 +69,12 @@ async function createVault() {
   } finally {
     loading.value = false;
   }
+}
+
+function resetForm() {
+  vaultName.value = ''
+  vaultDescription.value = ''
+  isPublic.value = 'false'
 }
 </script>
 

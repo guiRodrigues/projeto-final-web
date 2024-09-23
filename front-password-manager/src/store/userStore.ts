@@ -10,7 +10,8 @@ export const useUserStore = defineStore('user', () => {
     email: localStorage.getItem('email') || "",
     role: {
       name: localStorage.getItem('role') || ""
-    }
+    },
+    documentId: localStorage.getItem('documentId') || "",
   })
 
   const jwt = ref(localStorage.getItem('jwt') || '')
@@ -28,6 +29,7 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('id', authUser.id.toString())
     localStorage.setItem('email', authUser.email)
     localStorage.setItem('role', authUser.role.name)
+    localStorage.setItem('documentId', authUser.documentId)
     localStorage.setItem('jwt', token)
   }
 
