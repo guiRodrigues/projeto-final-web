@@ -19,6 +19,13 @@ Um gerenciador de senhas e notas, como o 1Password e LastPass.
 ![Analytics landing page — Untitled UI](https://cdn.dribbble.com/userupload/15729004/file/original-f173714d81790a38fc7101b23ff069ef.jpg?resize=2048x1536 "Analytics landing page — Untitled UI")
 ![Our team — Untitled UI](https://cdn.dribbble.com/userupload/13745057/file/original-535f0c9a22cc3b4dc716ac52b8f82c0c.jpg?resize=2048x1536 "Our team — Untitled UI")
 
+## Resultados
+### Homepage
+![img-1](./showcase-images/img-1.png)
+### Página de senhas com o usuário logado
+![img-2](./showcase-images/img-3.png)
+### Página de cofres com usuário deslogado
+![img-3](./showcase-images/img-2.png)
 
 ## Papéis ou tipos de usuário da aplicação
 
