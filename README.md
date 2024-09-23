@@ -43,7 +43,7 @@ Um gerenciador de senhas e notas, como o 1Password e LastPass.
 
 **Frontend:**
 
-VueJS v3.0, Vue-Router, e Axios.
+VueJS v3.0, Vue-Router, Pine, Axios, Tailwind, Shadcn-vue
 
 **Backend:**
 
