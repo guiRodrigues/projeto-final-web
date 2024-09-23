@@ -44,12 +44,12 @@ defineProps<Password>()
 
 <style>
 .password-card {
-    background-color: #EBF8E5;
+  background-color: #EBF8E5;
 }
 
 .password {
-    font-family: "Space Mono", monospace;
-    font-weight: 400;
-    font-style: normal;
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
 }
 </style>

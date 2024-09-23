@@ -4,6 +4,8 @@
     import VaultItem from '../components/VaultItem.vue';
 
     import { Vault } from '@/types';
+    import PasswordItem from "@/components/PasswordItem.vue";
+    import VaultForm from "@/components/VaultForm.vue";
 
     const vaults = ref([] as Vault[]);
     // const loading = ref(true)
@@ -25,7 +27,9 @@
 <template>
 <h1>COFRES</h1>
 
-<div class="grid grid-cols-4 gap-4">
+<VaultForm />
+
+<div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
     <VaultItem
         v-for="vault in vaults"
         :id="vault.id"
