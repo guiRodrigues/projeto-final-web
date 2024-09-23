@@ -1,16 +1,92 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { api } from '../api' 
+import { useUserStore } from '../store/userStore'
+import { isAxiosError } from 'axios'
+import { isApplicationError } from '../composables/useApplicationError'
+import type { ApplicationError } from '../types'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-// Reactive state to track the current form
 const isLoginForm = ref(true)
+const identifier = ref('')
+const password = ref('')
+const username = ref('')
+const signUpEmail = ref('')
+const signUpPassword = ref('')
+const loading = ref(false)
+const exception = ref<ApplicationError>()
+const router = useRouter()
+const userStore = useUserStore()
 
-// Function to toggle the form
 const toggleForm = () => {
   isLoginForm.value = !isLoginForm.value
+}
+
+const handleError = (e: unknown) => {
+  if (isAxiosError(e) && isApplicationError(e.response?.data)) {
+    exception.value = e.response?.data
+  }
+}
+
+const authenticateUser = async (jwt: string) => {
+  const res = await api.get('/users/me', {
+    headers: {
+      Authorization: `Bearer ${jwt}`
+    },
+    params: {
+      populate: 'role'
+    }
+  })
+
+  const role = res.data.role.type
+  userStore.authenticaded(res.data, jwt)
+
+  if (role === 'Adminstrator' || role === 'Authenticated') {
+    router.push('/account')
+  } else {
+    router.push('/')
+  }
+}
+
+const authenticate = async () => {
+  try {
+    loading.value = true
+    exception.value = undefined
+    const { data } = await api.post('/auth/local', {
+      identifier: identifier.value,
+      password: password.value
+    })
+    await authenticateUser(data.jwt)
+  } catch (e) {
+    handleError(e)
+  } finally {
+    loading.value = false
+  }
+}
+
+const createAccount = async () => {
+  try {
+    loading.value = true
+    exception.value = undefined
+    await api.post('/auth/local/register', {
+      email: signUpEmail.value,
+      password: signUpPassword.value,
+      username: username.value
+    })
+
+    identifier.value = signUpEmail.value
+    password.value = signUpPassword.value
+
+    await authenticate()
+  } catch (e) {
+    handleError(e)
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -27,67 +103,76 @@ const toggleForm = () => {
     <CardContent>
       <div class="grid gap-4">
         <template v-if="isLoginForm">
-          <div class="grid gap-2">
-            <Label for="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-            />
+          <div v-if="exception" class="alert alert-danger" role="alert">
+            {{ exception.error.message }}
           </div>
-          <div class="grid gap-2">
-            <div class="flex items-center">
-              <Label for="password">Password</Label>
-              <a href="#" class="ml-auto inline-block text-sm underline">
-                Forgot your password?
+          <div v-if="loading" class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <form v-else @submit.prevent="authenticate">
+            <div class="grid gap-2 mb-4">
+              <Label for="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                v-model="identifier"
+                required
+              />
+            </div>
+            <div class="grid gap-2 mb-4">
+              <div class="flex items-center">
+                <Label for="password">Password</Label>
+              </div>
+              <Input id="password" type="password" v-model="password" required />
+            </div>
+            <Button type="submit" class="w-full mb-4">
+              Login
+            </Button>
+            <div class="mt-4 text-center text-sm">
+              Don't have an account?
+              <a href="#" class="underline" @click.prevent="toggleForm">
+                Sign up
               </a>
             </div>
-            <Input id="password" type="password" required />
-          </div>
-          <Button type="submit" class="w-full">
-            Login
-          </Button>
-          <div class="mt-4 text-center text-sm">
-            Don't have an account?
-            <a href="#" class="underline" @click.prevent="toggleForm">
-              Sign up
-            </a>
-          </div>
+          </form>
         </template>
         <template v-else>
-          <div class="grid grid-cols-2 gap-4">
+          <div v-if="exception" class="alert alert-danger" role="alert">
+            {{ exception.error.message }}
+          </div>
+          <div v-if="loading" class="spinner-grow" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+          <form v-else @submit.prevent="createAccount">
             <div class="grid gap-2">
-              <Label for="first-name">First name</Label>
-              <Input id="first-name" placeholder="Max" required />
+              <Label for="username">Username</Label>
+              <Input id="username" placeholder="Max" v-model="username" required />
             </div>
             <div class="grid gap-2">
-              <Label for="last-name">Last name</Label>
-              <Input id="last-name" placeholder="Robinson" required />
+              <Label for="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                placeholder="m@example.com"
+                v-model="signUpEmail"
+                required
+              />
             </div>
-          </div>
-          <div class="grid gap-2">
-            <Label for="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="m@example.com"
-              required
-            />
-          </div>
-          <div class="grid gap-2">
-            <Label for="password">Password</Label>
-            <Input id="password" type="password" />
-          </div>
-          <Button type="submit" class="w-full">
-            Create an account
-          </Button>
-          <div class="mt-4 text-center text-sm">
-            Already have an account?
-            <a href="#" class="underline" @click.prevent="toggleForm">
-              Sign in
-            </a>
-          </div>
+            <div class="grid gap-2">
+              <Label for="password">Password</Label>
+              <Input id="password" type="password" v-model="signUpPassword" required />
+            </div>
+            <Button type="submit" class="w-full">
+              Create an account
+            </Button>
+            <div class="mt-4 text-center text-sm">
+              Already have an account?
+              <a href="#" class="underline" @click.prevent="toggleForm">
+                Sign in
+              </a>
+            </div>
+          </form>
         </template>
       </div>
     </CardContent>

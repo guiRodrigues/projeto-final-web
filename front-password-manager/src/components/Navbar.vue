@@ -119,7 +119,7 @@ function logout() {
         </a>
       </Button> -->
       <RouterLink v-if="!isAuthenticated" to="/login">
-        <Button>Login</Button>
+        <Button class="mx-3">Login</Button>
       </RouterLink>
       <div v-else>
         <span>Olá, {{ username }}!</span>
@@ -128,6 +128,3 @@ function logout() {
     </div>
   </header>
 </template>
-
-<style scoped>
-</style>
