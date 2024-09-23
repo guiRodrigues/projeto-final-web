@@ -4,14 +4,14 @@ import { useUserStore } from '../store/userStore';
 import Home from '../pages/Home.vue';
 import Login from '../pages/Login.vue';
 import NotFound from '../pages/NotFound.vue';
-import Test from '../pages/Test.vue';
+import User from '../pages/User.vue';
 import Vaults from '../pages/Vaults.vue';
 import Passwords from '../pages/Passwords.vue';
 
 const routes = [
     { path: '/', component: Home },
     { path: '/login', component: Login},
-    { path: '/test', component: Test, meta: { requiresAuth: true }},
+    { path: '/myaccount', component: User, meta: { requiresAuth: true }},
     { path: '/vaults', component: Vaults},
     { path: '/passwords', component: Passwords},
     { path: '/:pathMatch(.*)*', component: NotFound },

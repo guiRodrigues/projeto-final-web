@@ -106,7 +106,7 @@ function logout() {
         <Button class="mx-3">Login</Button>
       </RouterLink>
       <div v-else>
-        <span>Olá, {{ username }}!</span>
+        <RouterLink to="/myaccount"><Button variant="outline">{{ username }}'s account</Button></RouterLink>
         <Button class="mx-3" @click="logout">Logout</Button>
       </div>
     </div>
