@@ -2,6 +2,8 @@
 
 Um gerenciador de senhas e notas, como o 1Password e LastPass.
 
+Porém, ele é centralizado e possui duas visões. Os usuários têm a capacidade de criar novas Senhas e Cofres que podem ser não-públicos (visíveis apenas para ele e outros usuários autenticados) ou públicos (visíveis para todos que acessarem o site).
+
 ## Membros da equipe
 
 414941, Guilherme Santos Rodrigues
