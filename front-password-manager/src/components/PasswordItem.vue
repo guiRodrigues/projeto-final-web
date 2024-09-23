@@ -18,10 +18,10 @@ defineProps<Password>()
 <template>
   <Card class='password-card'>
     <CardHeader>
-      <CardTitle class="flex items-center">
+      <CardTitle class="text-lg flex items-center">
         <LockKeyholeOpen v-if="isPublic" class="m-2" />
         <LockKeyhole v-else class="m-2" />
-        <span>{{ name }}</span>
+        <span class="font-semibold">{{ name }}</span>
       </CardTitle>
       <CardDescription>From the vault <span class="font-bold italic">{{ vault.name }}</span> </CardDescription>
     </CardHeader>

@@ -34,7 +34,6 @@ import {ref, onMounted, computed} from 'vue';
 </script>
 
 <template>
-<h1>PASSWORDS</h1>
 <PasswordForm v-if="isAuthenticated" @passwordCreated="loadPasswords" />
 
 <div class="w-4/5 mx-auto mt-10 mb-12 grid grid-cols-4 gap-4">
