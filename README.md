@@ -6,6 +6,20 @@ Um gerenciador de senhas e notas, como o 1Password e LastPass.
 
 414941, Guilherme Santos Rodrigues
 
+## Como executar a aplicação
+
+- `cd my-strapi-project`
+- `npm run develop`
+- `cd front-password-manager` (em um outro terminal)
+- `npm run dev`
+- Abrir a URL no navegador: http://localhost:5173/
+
+## Referências visuais
+
+![Analytics landing page — Untitled UI](https://cdn.dribbble.com/userupload/15729004/file/original-f173714d81790a38fc7101b23ff069ef.jpg?resize=2048x1536 "Analytics landing page — Untitled UI")
+![Our team — Untitled UI](https://cdn.dribbble.com/userupload/13745057/file/original-535f0c9a22cc3b4dc716ac52b8f82c0c.jpg?resize=2048x1536 "Our team — Untitled UI")
+
+
 ## Papéis ou tipos de usuário da aplicação
 
 - Usuário não registrado, que apenas visualiza
@@ -15,15 +29,15 @@ Um gerenciador de senhas e notas, como o 1Password e LastPass.
 ## Entidades ou tabelas do sistema
 
 - Usuário
-- Entrada/Entry (representa algo que o usuário deseja salvar, pode ser um login/senha, uma chave de API, uma simples nota. Qualquer pedaço de informação que o usuário deseja armazenar. Se quiser, ele também pode compartilhar essa informação e deixar pública, como um Gist do GitHub).
+- Password (representa algo que o usuário deseja salvar, pode ser um login/senha, uma chave de API, uma simples nota. Qualquer pedaço de informação que o usuário deseja armazenar. Se quiser, ele também pode compartilhar essa informação e deixar pública, como um Gist do GitHub).
 - Cofre/Vault (representa um local que armazena as Entries, ou seja, um cofre que organiza os dados que o usuário criou. Por exemplo, o usuário pode ter o cofre "Faculdade" e armazenar suas senhas dos sistemas da faculdade, além disso, ele pode ter o cofre "Pessoal", que armazena senhas e logins pessoais)
 
 ## Principais funcionalidades da aplicação
 
-- Usuário não registrado consegue ver Entries compartilhadas com ele.
-- Usuário registrado consegue criar/visualizar/editar/deletar Entries.
-- Usuário registrado consegue criar/visualizar/editar/deletar Vaults.
-- Usuário registrado consegue associar as Entries com Vaults.
+- Usuário não registrado consegue ver Passwords e Cofres/Vaults públicos.
+- Usuário registrado consegue criar/visualizar/editar/deletar Passwords.
+- Usuário registrado consegue criar/visualizar/editar/deletar Cofres/Vaults.
+- Usuário registrado consegue associar as Entries com Cofres/Vaults.
 
 ## Tecnologias e frameworks utilizados
 
@@ -33,18 +47,16 @@ VueJS v3.0, Vue-Router, e Axios.
 
 **Backend:**
 
-Node.js e Express.
+Strapi
 
 ## Operações implementadas para cada entidade da aplicação
 
 
 | Entidade| Criação | Leitura | Atualização | Remoção |
 | --- | --- | --- | --- | --- |
-| Usuário |  |    |  |  |
+| Usuário | X |  X  |  |  |
 | Entry | X |  X  |  X | X |
 | Vault | X |  X  | X | X |
-
-> Lembre-se que é necessário implementar o CRUD de pelo menos duas entidades.
 
 ## Rotas da API REST utilizadas
 
